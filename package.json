@@ -1,7 +1,7 @@
 {
-  "name": "@askjo/pi-mem",
-  "version": "1.0.1",
-  "description": "Pi coding agent extension for plain-Markdown memory system — long-term memory, daily logs, and scratchpad checklist",
+  "name": "@haha1903/pi-mem",
+  "version": "1.0.2",
+  "description": "Pi coding agent extension for plain-Markdown memory system — long-term memory, daily logs, and scratchpad checklist (haha1903 fork with role: user injection fix for pi-coding-agent ≥ 0.75)",
   "main": "index.ts",
   "type": "module",
   "keywords": [
@@ -17,21 +17,21 @@
   "scripts": {
     "test": "node --import tsx --test tests/*.test.ts"
   },
-  "author": "jo-inc",
+  "author": "haha1903 (fork of jo-inc/pi-mem)",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jo-inc/pi-mem.git"
+    "url": "https://github.com/haha1903/pi-mem.git"
   },
   "bugs": {
-    "url": "https://github.com/jo-inc/pi-mem/issues"
+    "url": "https://github.com/haha1903/pi-mem/issues"
   },
-  "homepage": "https://github.com/jo-inc/pi-mem#readme",
+  "homepage": "https://github.com/haha1903/pi-mem#readme",
   "pi": {
     "extensions": [
       "./index.ts"
     ],
-    "image": "https://raw.githubusercontent.com/jo-inc/pi-mem/main/logo.png"
+    "image": "https://raw.githubusercontent.com/haha1903/pi-mem/main/logo.png"
   },
   "publishConfig": {
     "access": "public"
