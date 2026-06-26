@@ -24,26 +24,23 @@ jobs:
           node-version: "22"
           registry-url: "https://registry.npmjs.org"
 
-      # Auto-bump the patch component so every push to main releases a new
-      # version. We don't commit the bump back; the version is computed from
-      # commit count so it's monotonic and predictable.
-      - name: Compute version
+      # Publish the version declared in package.json. If that version is
+      # already on npm (e.g. a push that didn't bump version), skip instead
+      # of failing — bump package.json's "version" to cut a new release.
+      - name: Check version
         id: ver
         run: |
-          base=$(node -p "require('./package.json').version" | sed 's/-.*//')
-          major=$(echo $base | cut -d. -f1)
-          minor=$(echo $base | cut -d. -f2)
-          patch=$(git rev-list --count HEAD)
-          v="${major}.${minor}.${patch}"
-          echo "version=$v" >> "$GITHUB_OUTPUT"
-          node -e "
-            const fs=require('fs'), p=require('./package.json');
-            p.version='$v';
-            fs.writeFileSync('./package.json', JSON.stringify(p, null, 2)+'\n');
-          "
-          echo "Bumped to $v"
+          name=$(node -p "require('./package.json').name")
+          v=$(node -p "require('./package.json').version")
+          if npm view "$name@$v" version >/dev/null 2>&1; then
+            echo "$name@$v already published, skipping."
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Publish
+        if: steps.ver.outputs.publish == 'true'
         run: npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
